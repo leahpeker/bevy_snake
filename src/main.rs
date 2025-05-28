@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy::time::common_conditions::on_timer;
 use bevy::window::PrimaryWindow;
 use core::time::Duration;
-use rand::random;
+use rand::Rng;
 
 const SNAKE_HEAD_COLOR: Color = Color::srgb(0.7, 0.7, 0.7);
 const FOOD_COLOR: Color = Color::srgb(1.0, 0.0, 1.0);
@@ -261,6 +261,8 @@ fn position_translation(
 }
 
 fn spawn_food(mut commands: Commands) {
+    let mut rng = rand::rng();
+
     commands
         .spawn(Sprite {
             color: FOOD_COLOR,
@@ -268,8 +270,8 @@ fn spawn_food(mut commands: Commands) {
         })
         .insert(Food)
         .insert(Position {
-            x: (random::<f32>() * ARENA_WIDTH as f32) as i32,
-            y: (random::<f32>() * ARENA_HEIGHT as f32) as i32,
+            x: rng.random_range(0..ARENA_WIDTH as i32),
+            y: rng.random_range(0..ARENA_HEIGHT as i32),
         })
         .insert(Size::square(0.8));
 }
