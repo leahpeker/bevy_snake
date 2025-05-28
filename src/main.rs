@@ -108,11 +108,11 @@ fn spawn_segment(mut commands: Commands, position: Position) -> Entity {
 }
 
 fn snake_movement(
+    mut last_tail_position: ResMut<LastTailPosition>,
+    mut game_over_writer: EventWriter<GameOverEvent>,
     segments: ResMut<SnakeSegments>,
     mut heads: Query<(Entity, &SnakeHead)>,
     mut positions: Query<&mut Position>,
-    mut last_tail_position: ResMut<LastTailPosition>,
-    mut game_over_writer: EventWriter<GameOverEvent>,
 ) {
     if let Some((head_entity, head)) = heads.iter_mut().next() {
         let segment_positions = segments
@@ -197,6 +197,7 @@ fn game_over(
         spawn_snake(commands, segments_res);
     }
 }
+
 fn snake_eating(
     mut commands: Commands,
     mut growth_writer: EventWriter<GrowthEvent>,
